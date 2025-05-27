@@ -1,12 +1,11 @@
 # EricWriter
 
-A minimalist, distraction-free writing application inspired by Zenwriter.app. EricWriter provides a clean, focused environment for your thoughts with powerful customization options and seamless document management.
+A minimalist, distraction-free writing application.  Add to it as you like!  Vibe coded with the help of "The Future Sound of London" and "Liquid Drum and Bass 2025 | Chill DnB" playlist. 
+Check them out on Spotify, and my own music at "liighthouse"
 
 ## 👨‍💻 Author
 
 **Eric Menzie** - Creator and Developer
-Vibe coded with the help of "The Future Sound of London" and "Liquid Drum and Bass 2025 | Chill DnB" playlist. 
-Check them out on Spotify, and my music at "liighthouse".
 
 ## ✨ Features
 
