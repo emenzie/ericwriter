@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EricWriter - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/themes.css') }}">
+</head>
+<body class="{{ current_user.theme if current_user.is_authenticated else 'minimalist' }}">
+    <nav>
+        <div class="nav-content">
+            <a href="/" class="logo">Eric Writer</a>
+            <div class="nav-links">
+                {% if current_user.is_authenticated %}
+                    <a href="/settings" class="nav-btn">Settings</a>
+                    <button onclick="logout()" class="nav-btn">Logout</button>
+                {% else %}
+                    <a href="/login" class="nav-btn">Login</a>
+                    <a href="/register" class="nav-btn">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    {% if current_user.is_authenticated and current_user.theme == 'custom' %}
+    <script>
+    // Set custom theme variables from server
+    const bgGradient = 'linear-gradient(0deg, {{ current_user.custom_bg_primary }} 0%, #ffffff 100%)';
+    document.documentElement.style.setProperty('--custom-bg-primary', '{{ current_user.custom_bg_primary }}');
+    document.documentElement.style.setProperty('--custom-bg-secondary', '{{ current_user.custom_bg_secondary }}');
+    document.documentElement.style.setProperty('--custom-bg-gradient', bgGradient);
+    document.documentElement.style.setProperty('--custom-text-primary', '{{ current_user.custom_text_primary }}');
+    document.documentElement.style.setProperty('--custom-text-secondary', '{{ current_user.custom_text_secondary }}');
+    document.documentElement.style.setProperty('--custom-accent-color', '{{ current_user.custom_accent_color }}');
+    document.documentElement.style.setProperty('--custom-font-size-value', '{{ current_user.custom_font_size }}px');
+    </script>
+    {% endif %}
+    <script>
+    // Initialize theme from localStorage or server
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.body.className = savedTheme;
+        }
+    }
+    window.addEventListener('load', initTheme);
+    </script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html> 

@@ -1,0 +1,381 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+}
+
+/* Navigation */
+nav {
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    padding: 1rem;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: none;
+    color: #666;
+    cursor: pointer;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+.nav-btn:hover {
+    color: #333;
+}
+
+/* Main content */
+main {
+    margin-top: 4rem;
+    min-height: calc(100vh - 4rem);
+}
+
+/* Writer container */
+.writer-container {
+    display: flex;
+    height: calc(100vh - 4rem);
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background: #fff;
+    border-right: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.new-doc-btn {
+    padding: 0.5rem 1rem;
+    background: #007AFF;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.documents-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.document-item {
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.document-item:hover {
+    background: #f5f5f5;
+}
+
+.document-item.active {
+    background: #e6f3ff;
+    border-left: 3px solid #007AFF;
+}
+
+.doc-title {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.doc-date {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+/* Editor */
+.editor-container {
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.title-input {
+    font-size: 2rem;
+    font-weight: bold;
+    border: none;
+    background: none;
+    margin-bottom: 1rem;
+    width: 100%;
+    outline: none;
+}
+
+.editor {
+    flex: 1;
+    outline: none;
+    font-size: 1.125rem;
+    line-height: 1.8;
+}
+
+.editor[placeholder]:empty:before {
+    content: attr(placeholder);
+    color: #999;
+}
+
+/* Auth pages */
+.auth-container {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.auth-container h1 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 500;
+}
+
+.form-group input {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.auth-btn {
+    padding: 0.75rem;
+    background: #007AFF;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.auth-btn:hover {
+    background: #0056b3;
+}
+
+.auth-link {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.auth-link a {
+    color: #007AFF;
+    text-decoration: none;
+}
+
+/* Welcome page */
+.welcome-container {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.welcome-container h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.welcome-container p {
+    font-size: 1.25rem;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.welcome-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.welcome-btn {
+    padding: 0.75rem 2rem;
+    background: #007AFF;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 1.125rem;
+}
+
+.welcome-btn:hover {
+    background: #0056b3;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .writer-container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid #eee;
+    }
+
+    .editor-container {
+        padding: 1rem;
+    }
+
+    .title-input {
+        font-size: 1.5rem;
+    }
+}
+
+/* Document item with delete button */
+.document-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.doc-content {
+    flex: 1;
+}
+
+.delete-btn {
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 3px;
+    opacity: 0;
+    transition: opacity 0.2s, color 0.2s;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.document-item:hover .delete-btn {
+    opacity: 1;
+}
+
+.delete-btn:hover {
+    color: #ff4444;
+    background: rgba(255, 68, 68, 0.1);
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: var(--bg-secondary, #fff);
+    margin: 15% auto;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content h3 {
+    margin-bottom: 1rem;
+    color: var(--text-primary, #333);
+}
+
+.modal-content p {
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary, #666);
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.modal-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s;
+}
+
+.delete-confirm {
+    background: #ff4444;
+    color: white;
+}
+
+.delete-confirm:hover {
+    background: #cc3333;
+}
+
+.delete-cancel {
+    background: var(--bg-primary, #f5f5f5);
+    color: var(--text-primary, #333);
+    border: 1px solid var(--border-color, #ddd);
+}
+
+.delete-cancel:hover {
+    background: var(--border-color, #ddd);
+} 

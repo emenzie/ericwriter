@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+<div class="settings-container">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <h1>Settings</h1>
+    <div class="settings-section">
+        <h2>Theme</h2>
+        <div class="theme-grid">
+            {% for theme in themes %}
+            <div class="theme-option {% if theme == current_theme %}active{% endif %}" 
+                 data-theme="{{ theme }}"
+                 onclick="selectTheme('{{ theme }}')">
+                <div class="theme-preview {{ theme }}">
+                    <div class="preview-header"></div>
+                    <div class="preview-content"></div>
+                </div>
+                <div class="theme-name">{{ theme.replace('_', ' ').title() }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Custom Theme Controls -->
+        <div class="custom-theme-controls" id="customControls">
+            <h3>Custom Theme Settings</h3>
+            
+            <div class="control-group">
+                <label for="fontSize">Font Size: <span class="font-size-display" id="fontSizeDisplay">{{ custom_settings.font_size }}px</span></label>
+                <input type="range" id="fontSize" min="12" max="24" value="{{ custom_settings.font_size }}" oninput="updateFontSizeDisplay(this.value)">
+            </div>
+            
+            <div class="color-controls">
+                <div class="control-group">
+                    <label for="bgPrimary">Primary Background</label>
+                    <input type="color" id="bgPrimary" value="{{ custom_settings.bg_primary }}">
+                </div>
+                
+                <div class="control-group">
+                    <label for="bgSecondary">Secondary Background</label>
+                    <input type="color" id="bgSecondary" value="{{ custom_settings.bg_secondary }}">
+                </div>
+                
+                <div class="control-group">
+                    <label for="textPrimary">Primary Text</label>
+                    <input type="color" id="textPrimary" value="{{ custom_settings.text_primary }}">
+                </div>
+                
+                <div class="control-group">
+                    <label for="textSecondary">Secondary Text</label>
+                    <input type="color" id="textSecondary" value="{{ custom_settings.text_secondary }}">
+                </div>
+                
+                <div class="control-group">
+                    <label for="accentColor">Accent Color</label>
+                    <input type="color" id="accentColor" value="{{ custom_settings.accent_color }}">
+                </div>
+            </div>
+            
+            <button class="apply-custom-btn" onclick="applyCustomTheme()">Apply Custom Theme</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function selectTheme(theme) {
+    // Show/hide custom controls
+    const customControls = document.getElementById('customControls');
+    if (theme === 'custom') {
+        customControls.classList.add('active');
+        return; // Don't save yet, let user configure first
+    } else {
+        customControls.classList.remove('active');
+    }
+
+    // Update UI
+    document.querySelectorAll('.theme-option').forEach(option => {
+        option.classList.remove('active');
+        if (option.dataset.theme === theme) {
+            option.classList.add('active');
+        }
+    });
+
+    // Save theme preference
+    fetch('/settings', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('input[name="csrf_token"]').value
+        },
+        body: JSON.stringify({ theme: theme })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Apply theme immediately
+            document.body.className = theme;
+            localStorage.setItem('theme', theme);
+            // Reload the page to ensure all components get the new theme
+            window.location.reload();
+        }
+    })
+    .catch(error => {
+        console.error('Error saving theme:', error);
+        alert('Failed to save theme. Please try again.');
+    });
+}
+
+function updateFontSizeDisplay(value) {
+    document.getElementById('fontSizeDisplay').textContent = value + 'px';
+    // Apply preview
+    applyCustomPreview();
+}
+
+function applyCustomPreview() {
+    const fontSize = document.getElementById('fontSize').value;
+    const bgPrimary = document.getElementById('bgPrimary').value;
+    const bgSecondary = document.getElementById('bgSecondary').value;
+    const textPrimary = document.getElementById('textPrimary').value;
+    const textSecondary = document.getElementById('textSecondary').value;
+    const accentColor = document.getElementById('accentColor').value;
+
+    // Create gradient for primary background
+    const bgGradient = `linear-gradient(0deg, ${bgPrimary} 0%, #ffffff 100%)`;
+
+    // Apply custom CSS variables
+    document.documentElement.style.setProperty('--custom-bg-primary', bgPrimary);
+    document.documentElement.style.setProperty('--custom-bg-secondary', bgSecondary);
+    document.documentElement.style.setProperty('--custom-bg-gradient', bgGradient);
+    document.documentElement.style.setProperty('--custom-text-primary', textPrimary);
+    document.documentElement.style.setProperty('--custom-text-secondary', textSecondary);
+    document.documentElement.style.setProperty('--custom-accent-color', accentColor);
+    document.documentElement.style.setProperty('--custom-font-size-value', fontSize + 'px');
+    
+    // Apply custom theme class
+    document.body.className = 'custom';
+}
+
+function applyCustomTheme() {
+    const customSettings = {
+        font_size: parseInt(document.getElementById('fontSize').value),
+        bg_primary: document.getElementById('bgPrimary').value,
+        bg_secondary: document.getElementById('bgSecondary').value,
+        text_primary: document.getElementById('textPrimary').value,
+        text_secondary: document.getElementById('textSecondary').value,
+        accent_color: document.getElementById('accentColor').value
+    };
+
+    // Save custom theme settings
+    fetch('/settings', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('input[name="csrf_token"]').value
+        },
+        body: JSON.stringify({ custom_settings: customSettings })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update UI
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.dataset.theme === 'custom') {
+                    option.classList.add('active');
+                }
+            });
+            
+            localStorage.setItem('theme', 'custom');
+            localStorage.setItem('customSettings', JSON.stringify(customSettings));
+            alert('Custom theme saved successfully!');
+            window.location.reload();
+        }
+    })
+    .catch(error => {
+        console.error('Error saving custom theme:', error);
+        alert('Failed to save custom theme. Please try again.');
+    });
+}
+
+// Add event listeners for live preview
+document.addEventListener('DOMContentLoaded', function() {
+    const colorInputs = document.querySelectorAll('#customControls input[type="color"]');
+    colorInputs.forEach(input => {
+        input.addEventListener('input', applyCustomPreview);
+    });
+    
+    // Show custom controls if current theme is custom
+    if ('{{ current_theme }}' === 'custom') {
+        document.getElementById('customControls').classList.add('active');
+        document.querySelector('[data-theme="custom"]').classList.add('active');
+        applyCustomPreview();
+    }
+});
+
+// Initialize theme previews
+document.querySelectorAll('.theme-preview').forEach(preview => {
+    const theme = preview.classList[1];
+    preview.style.cssText = `
+        background-color: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+    `;
+    preview.querySelector('.preview-header').style.cssText = `
+        height: 20px;
+        background-color: var(--accent-color);
+        margin-bottom: 10px;
+    `;
+    preview.querySelector('.preview-content').style.cssText = `
+        height: 100px;
+        background-color: var(--bg-primary);
+    `;
+});
+
+// Apply saved theme on page load
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) {
+    document.body.className = savedTheme;
+    if (savedTheme === 'custom') {
+        const customSettings = localStorage.getItem('customSettings');
+        if (customSettings) {
+            const settings = JSON.parse(customSettings);
+            const bgGradient = `linear-gradient(0deg, ${settings.bg_primary} 0%, #ffffff 100%)`;
+            document.documentElement.style.setProperty('--custom-bg-primary', settings.bg_primary);
+            document.documentElement.style.setProperty('--custom-bg-secondary', settings.bg_secondary);
+            document.documentElement.style.setProperty('--custom-bg-gradient', bgGradient);
+            document.documentElement.style.setProperty('--custom-text-primary', settings.text_primary);
+            document.documentElement.style.setProperty('--custom-text-secondary', settings.text_secondary);
+            document.documentElement.style.setProperty('--custom-accent-color', settings.accent_color);
+            document.documentElement.style.setProperty('--custom-font-size-value', settings.font_size + 'px');
+        }
+    }
+}
+</script>
+{% endblock %} 

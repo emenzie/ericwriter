@@ -1,0 +1,293 @@
+/* Settings page styles */
+.settings-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+}
+
+.settings-section {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.theme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.theme-option {
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s;
+    border: 1px solid var(--border-color);
+}
+
+.theme-option:hover {
+    transform: translateY(-2px);
+}
+
+.theme-option.active {
+    box-shadow: 0 0 0 3px var(--accent-color);
+}
+
+.theme-preview {
+    height: 150px;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.theme-name {
+    text-align: center;
+    margin-top: 0.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+/* Base theme variables */
+:root {
+    --bg-primary: #f9f9f9;
+    --bg-secondary: #ffffff;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --accent-color: #007AFF;
+    --border-color: #eeeeee;
+}
+
+/* Theme: Minimalist */
+.minimalist {
+    --bg-primary: #f9f9f9;
+    --bg-secondary: #ffffff;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --accent-color: #007AFF;
+    --border-color: #eeeeee;
+}
+
+/* Theme: Cyberpunk */
+.cyberpunk {
+    --bg-primary: #0a0a1f;
+    --bg-secondary: #1a1a3a;
+    --text-primary: #00ff9d;
+    --text-secondary: #ff00ff;
+    --accent-color: #00ffff;
+    --border-color: #ff00ff33;
+    font-family: 'Courier New', monospace;
+}
+
+.cyberpunk .editor {
+    text-shadow: 0 0 5px var(--accent-color);
+}
+
+.cyberpunk .nav-content {
+    border-bottom: 1px solid var(--accent-color);
+}
+
+/* Theme: Beach Vacation */
+.beach_vacation {
+    --bg-primary: #f5e6d3;
+    --bg-secondary: #ffffff;
+    --text-primary: #2d5d7b;
+    --text-secondary: #66a5ad;
+    --accent-color: #ff7e5f;
+    --border-color: #66a5ad33;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Theme: Major City */
+.major_city {
+    --bg-primary: #2c3e50;
+    --bg-secondary: #34495e;
+    --text-primary: #ecf0f1;
+    --text-secondary: #bdc3c7;
+    --accent-color: #e74c3c;
+    --border-color: #ffffff22;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Theme: Outer Space */
+.outer_space {
+    --bg-primary: #0b0b1a;
+    --bg-secondary: #1a1a2f;
+    --text-primary: #ffffff;
+    --text-secondary: #8888aa;
+    --accent-color: #7b68ee;
+    --border-color: #ffffff11;
+    font-family: 'Space Mono', monospace;
+}
+
+/* Theme: Custom */
+.custom {
+    --bg-primary: var(--custom-bg-primary, #ffffff);
+    --bg-secondary: var(--custom-bg-secondary, #f5f5f5);
+    --text-primary: var(--custom-text-primary, #333333);
+    --text-secondary: var(--custom-text-secondary, #666666);
+    --accent-color: var(--custom-accent-color, #007AFF);
+    --border-color: color-mix(in srgb, var(--custom-text-primary, #333333) 20%, transparent);
+    --custom-font-size: var(--custom-font-size-value, 16px);
+}
+
+.custom body,
+.custom .writer-container,
+.custom .editor-container {
+    background: var(--custom-bg-gradient, linear-gradient(0deg, #ffffff 0%, #ffffff 100%));
+}
+
+.custom nav,
+.custom .nav-content {
+    background: var(--custom-bg-primary, #ffffff);
+}
+
+.custom .editor {
+    font-size: var(--custom-font-size);
+}
+
+/* Custom theme controls */
+.custom-theme-controls {
+    display: none;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    border: 1px solid var(--border-color);
+}
+
+.custom-theme-controls.active {
+    display: block;
+}
+
+.control-group {
+    margin-bottom: 1rem;
+}
+
+.control-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.control-group input[type="range"] {
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.control-group input[type="color"] {
+    width: 60px;
+    height: 40px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.color-controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.font-size-display {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-left: 0.5rem;
+}
+
+.apply-custom-btn {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 1rem;
+    transition: opacity 0.2s;
+}
+
+.apply-custom-btn:hover {
+    opacity: 0.9;
+}
+
+/* Apply theme variables to components */
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+nav {
+    background: var(--bg-primary);
+    transition: background-color 0.3s;
+}
+
+.nav-content {
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.3s;
+}
+
+.sidebar {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+    transition: background-color 0.3s;
+}
+
+.editor-container {
+    background: var(--bg-secondary);
+    transition: background-color 0.3s;
+}
+
+.title-input {
+    color: var(--text-primary);
+    background: transparent;
+    border: 1px solid var(--border-color);
+}
+
+.editor {
+    color: var(--text-primary);
+    background: transparent;
+}
+
+.nav-btn {
+    color: var(--text-secondary);
+    transition: color 0.3s;
+}
+
+.nav-btn:hover {
+    color: var(--text-primary);
+}
+
+.document-item {
+    border-color: var(--border-color);
+    transition: background-color 0.3s;
+}
+
+.document-item:hover {
+    background: var(--bg-primary);
+}
+
+.document-item.active {
+    background: color-mix(in srgb, var(--accent-color) 10%, var(--bg-secondary));
+    border-left-color: var(--accent-color);
+}
+
+.auth-container {
+    background: var(--bg-secondary);
+    transition: background-color 0.3s;
+}
+
+.auth-btn {
+    background: var(--accent-color);
+    color: var(--bg-secondary);
+    transition: background-color 0.3s;
+}
+
+.welcome-btn {
+    background: var(--accent-color);
+    color: var(--bg-secondary);
+    transition: background-color 0.3s;
+} 

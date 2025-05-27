@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+
+{% block title %}Write{% endblock %}
+
+{% block content %}
+<div class="writer-container">
+    {% if current_user.is_authenticated %}
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>Documents</h2>
+                <button onclick="newDocument()" class="new-doc-btn">New</button>
+            </div>
+            <div class="documents-list" id="documents-list">
+                <!-- Documents will be loaded here -->
+            </div>
+        </div>
+        <div class="editor-container">
+            <input type="text" id="title" class="title-input" placeholder="Untitled" autocomplete="off">
+            <div id="editor" class="editor" contenteditable="true" placeholder="Start writing..."></div>
+        </div>
+    {% else %}
+        <div class="welcome-container">
+            <h1>Welcome to EricWriter</h1>
+            <p>A minimalist writing experience for your thoughts.</p>
+            <div class="welcome-buttons">
+                <a href="/login" class="welcome-btn">Login</a>
+                <a href="/register" class="welcome-btn">Register</a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Delete Confirmation Modal (outside conditional block) -->
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <h3>Delete Note</h3>
+        <p>Are you sure you would like to delete "<span id="deleteTitle"></span>"?</p>
+        <div class="modal-buttons">
+            <button id="confirmDelete" class="modal-btn delete-confirm">Yes</button>
+            <button id="cancelDelete" class="modal-btn delete-cancel">No</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function() {
+    {% if current_user.is_authenticated %}
+    let currentDocId = null;
+    let saveTimeout = null;
+
+    // Load all documents
+    function loadDocuments() {
+        fetch('/api/documents', {
+            headers: {
+                'X-CSRFToken': document.querySelector('input[name="csrf_token"]').value
+            }
+        })
+        .then(response => response.json())
+        .then(documents => {
+            const list = document.getElementById('documents-list');
+            list.innerHTML = '';
+            documents.forEach(doc => {
+                const item = document.createElement('div');
+                item.className = 'document-item' + (doc.id === currentDocId ? ' active' : '');
+                item.onclick = () => loadDocument(doc.id);
+                const docTitle = (doc.title || 'Untitled').replace(/'/g, "\\'").replace(/"/g, '\\"');
+                item.innerHTML = `
+                    <div class="doc-content">
+                        <div class="doc-title">${doc.title || 'Untitled'}</div>
+                        <div class="doc-date">${new Date(doc.updated_at).toLocaleDateString()}</div>
+                    </div>
+                    <button class="delete-btn" onclick="event.stopPropagation(); confirmDelete(${doc.id}, '${docTitle}')">×</button>
+                `;
+                list.appendChild(item);
+            });
+        });
+    }
+
+    // Load a specific document
+    function loadDocument(id) {
+        currentDocId = id;
+        fetch(`/api/documents/${id}`, {
+            headers: {
+                'X-CSRFToken': document.querySelector('input[name="csrf_token"]').value
+            }
+        })
+        .then(response => response.json())
+        .then(doc => {
+            document.getElementById('title').value = doc.title || '';
+            document.getElementById('editor').innerHTML = doc.content || '';
+            // Update active state in sidebar
+            document.querySelectorAll('.document-item').forEach(item => item.classList.remove('active'));
+            document.querySelector(`.document-item[onclick="loadDocument(${id})"]`)?.classList.add('active');
+        });
+    }
+
+    // Save the current document
+    function saveDocument() {
+        const title = document.getElementById('title').value;
+        const content = document.getElementById('editor').innerHTML;
+
+        if (!content.trim() && !title.trim()) {
+            return; // Don't save empty documents
+        }
+
+        const method = currentDocId ? 'PUT' : 'POST';
+        const url = currentDocId ? `/api/documents/${currentDocId}` : '/api/documents';
+
+        fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('input[name="csrf_token"]').value
+            },
+            body: JSON.stringify({ title, content })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (!currentDocId && data.id) {
+                currentDocId = data.id;
+            }
+            loadDocuments(); // Refresh the sidebar
+        })
+        .catch(error => {
+            console.error('Error saving:', error);
+            alert('Failed to save document. Please try again.');
+        });
+    }
+
+    // Create a new document
+    function newDocument() {
+        currentDocId = null;
+        document.getElementById('title').value = '';
+        document.getElementById('editor').innerHTML = '';
+        document.getElementById('editor').focus();
+    }
+
+    // Setup autosave
+    function setupAutosave() {
+        const editor = document.getElementById('editor');
+        const title = document.getElementById('title');
+
+        [editor, title].forEach(element => {
+            element.addEventListener('input', () => {
+                if (saveTimeout) clearTimeout(saveTimeout);
+                saveTimeout = setTimeout(saveDocument, 1000);
+            });
+        });
+
+        // Save before leaving the page
+        window.addEventListener('beforeunload', () => {
+            if (saveTimeout) {
+                clearTimeout(saveTimeout);
+                saveDocument();
+            }
+        });
+    }
+
+    // Initialize
+    loadDocuments();
+    setupAutosave();
+
+    // Delete document function
+    function deleteDocument(id) {
+        fetch(`/api/documents/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRFToken': document.querySelector('input[name="csrf_token"]').value
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                if (currentDocId === id) {
+                    // If we deleted the current document, create a new one
+                    newDocument();
+                }
+                loadDocuments(); // Refresh the sidebar
+            } else {
+                alert('Failed to delete document. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting:', error);
+            alert('Failed to delete document. Please try again.');
+        });
+    }
+
+    // Show delete confirmation modal
+    function confirmDelete(id, title) {
+        const modal = document.getElementById('deleteModal');
+        const titleSpan = document.getElementById('deleteTitle');
+        titleSpan.textContent = title;
+        modal.style.display = 'block';
+        
+        // Set up button handlers
+        document.getElementById('confirmDelete').onclick = () => {
+            deleteDocument(id);
+            modal.style.display = 'none';
+        };
+        
+        document.getElementById('cancelDelete').onclick = () => {
+            modal.style.display = 'none';
+        };
+        
+        // Close modal when clicking outside
+        modal.onclick = (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        };
+    }
+
+    // Make functions globally available
+    window.newDocument = newDocument;
+    window.confirmDelete = confirmDelete;
+    window.logout = function() {
+        fetch('/logout', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('input[name="csrf_token"]').value
+            }
+        })
+        .then(() => window.location.href = '/login');
+    };
+    {% endif %}
+})();
+
+// Global modal functionality (works for all users)
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('deleteModal');
+    if (modal) {
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.style.display === 'block') {
+                modal.style.display = 'none';
+            }
+        });
+    }
+});
+</script>
+{% endblock %} 
