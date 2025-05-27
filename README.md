@@ -2,6 +2,10 @@
 
 A minimalist, distraction-free writing application.  Vibe coding FTW
 
+Shout out to The Future Sound of London for this track that got me into the zone:
+https://open.spotify.com/track/50a2fhUzn1EiQBDvbeS1H3?si=6270dfda0cdd445b
+
+
 ## 👨‍💻 Author
 
 **Eric Menzie** - Creator and Developer
