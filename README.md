@@ -1,7 +1,6 @@
 # EricWriter
 
-A minimalist, distraction-free writing application.  Add to it as you like!  Vibe coded with the help of "The Future Sound of London" and "Liquid Drum and Bass 2025 | Chill DnB" playlist. 
-Check them out on Spotify, and my own music at "liighthouse"
+A minimalist, distraction-free writing application.  Add to it as you like!
 
 ## 👨‍💻 Author
 

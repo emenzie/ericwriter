@@ -16,8 +16,10 @@
             </div>
         </div>
         <div class="editor-container">
-            <input type="text" id="title" class="title-input" placeholder="Untitled" autocomplete="off">
-            <div id="editor" class="editor" contenteditable="true" placeholder="Start writing..."></div>
+            <div class="editor-wrapper">
+                <input type="text" id="title" class="title-input" placeholder="Untitled" autocomplete="off">
+                <div id="editor" class="editor" contenteditable="true" placeholder="Start writing..."></div>
+            </div>
         </div>
     {% else %}
         <div class="welcome-container">

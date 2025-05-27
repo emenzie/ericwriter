@@ -10,7 +10,10 @@
 <body class="{{ current_user.theme if current_user.is_authenticated else 'minimalist' }}">
     <nav>
         <div class="nav-content">
-            <a href="/" class="logo">Eric Writer</a>
+            {% if current_user.is_authenticated %}
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            {% endif %}
+            <a href="/" class="logo">EricWriter</a>
             <div class="nav-links">
                 {% if current_user.is_authenticated %}
                     <a href="/settings" class="nav-btn">Settings</a>
@@ -46,6 +49,15 @@
             document.body.className = savedTheme;
         }
     }
+    
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) {
+            sidebar.classList.toggle('mobile-open');
+        }
+    }
+    
     window.addEventListener('load', initTheme);
     </script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
