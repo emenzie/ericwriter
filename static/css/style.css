@@ -54,7 +54,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 20px;
+    padding: 12px 0 12px 20px; /* Remove left padding from right side */
     height: 60px;
 }
 
@@ -64,12 +64,82 @@ nav {
     text-decoration: none;
     color: var(--notion-text);
     letter-spacing: -0.01em;
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.8), 0 0 6px rgba(255, 255, 255, 0.6);
+    position: relative;
+}
+
+.logo::before {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.new-note-btn {
+    margin-right: 12px;
+    padding: 6px 12px;
+    background: var(--accent-color, var(--notion-blue));
+    color: var(--bg-primary, white);
+    border: none;
+    border-radius: var(--notion-radius);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.15s ease;
+    box-shadow: var(--notion-shadow);
+    border: 1px solid var(--accent-color, var(--notion-blue));
+    min-width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.new-note-btn:hover {
+    background: color-mix(in srgb, var(--accent-color, var(--notion-blue)) 85%, black);
+    box-shadow: var(--notion-shadow-hover);
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--accent-color, var(--notion-blue)) 85%, black);
+}
+
+/* Floating New Note Button */
+.floating-new-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 56px;
+    height: 56px;
+    background: var(--accent-color, var(--notion-blue));
+    color: var(--bg-primary, white);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 24px;
+    font-weight: 600;
+    transition: all 0.15s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--accent-color, var(--notion-blue));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.floating-new-btn:hover {
+    background: color-mix(in srgb, var(--accent-color, var(--notion-blue)) 85%, black);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--accent-color, var(--notion-blue)) 85%, black);
 }
 
 .nav-links {
     display: flex;
     gap: 8px;
     align-items: center;
+    padding-right: 20px;
 }
 
 .nav-btn {
@@ -131,8 +201,8 @@ main {
 
 .new-doc-btn {
     padding: 8px 12px;
-    background: var(--notion-blue);
-    color: white;
+    background: var(--accent-color, var(--notion-blue));
+    color: var(--bg-primary, white);
     border: none;
     border-radius: var(--notion-radius);
     cursor: pointer;
@@ -140,12 +210,14 @@ main {
     font-weight: 500;
     transition: all 0.15s ease;
     box-shadow: var(--notion-shadow);
+    border: 1px solid var(--accent-color, var(--notion-blue));
 }
 
 .new-doc-btn:hover {
-    background: var(--notion-blue-hover);
+    background: color-mix(in srgb, var(--accent-color, var(--notion-blue)) 85%, black);
     box-shadow: var(--notion-shadow-hover);
     transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--accent-color, var(--notion-blue)) 85%, black);
 }
 
 .documents-list {
@@ -234,9 +306,9 @@ main {
 }
 
 .editor-wrapper {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 40px 60px;
+    max-width: none;
+    margin: 0;
+    padding: 15px; /* 15px from all sides */
     width: 100%;
     flex: 1;
     display: flex;
@@ -341,8 +413,8 @@ main {
 
 .auth-btn {
     padding: 12px 24px;
-    background: var(--notion-blue);
-    color: white;
+    background: var(--accent-color, var(--notion-blue));
+    color: var(--bg-primary, white);
     border: none;
     border-radius: var(--notion-radius);
     font-size: 14px;
@@ -351,12 +423,14 @@ main {
     margin-top: 8px;
     transition: all 0.15s ease;
     font-family: 'Inter', sans-serif;
+    border: 1px solid var(--accent-color, var(--notion-blue));
 }
 
 .auth-btn:hover {
-    background: var(--notion-blue-hover);
+    background: color-mix(in srgb, var(--accent-color, var(--notion-blue)) 85%, black);
     transform: translateY(-1px);
     box-shadow: var(--notion-shadow-hover);
+    border-color: color-mix(in srgb, var(--accent-color, var(--notion-blue)) 85%, black);
 }
 
 .auth-link {
@@ -407,20 +481,24 @@ main {
 
 .welcome-btn {
     padding: 12px 24px;
-    background: var(--notion-blue);
-    color: white;
+    background: var(--accent-color, var(--notion-blue));
+    color: var(--bg-primary, white);
     text-decoration: none;
     border-radius: var(--notion-radius);
     font-size: 14px;
     font-weight: 500;
     transition: all 0.15s ease;
     box-shadow: var(--notion-shadow);
+    border: 1px solid var(--accent-color, var(--notion-blue));
+    display: inline-block;
 }
 
 .welcome-btn:hover {
-    background: var(--notion-blue-hover);
+    background: color-mix(in srgb, var(--accent-color, var(--notion-blue)) 85%, black);
     transform: translateY(-1px);
     box-shadow: var(--notion-shadow-hover);
+    border-color: color-mix(in srgb, var(--accent-color, var(--notion-blue)) 85%, black);
+    color: var(--bg-primary, white);
 }
 
 /* Modal styles */
@@ -514,6 +592,82 @@ main {
     background: var(--notion-bg-hover);
 }
 
+/* User dropdown */
+.user-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.user-btn {
+    padding: 6px 12px;
+    border: none;
+    background: var(--notion-bg-hover);
+    color: var(--notion-text);
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: var(--notion-radius);
+    font-weight: 500;
+    transition: all 0.15s ease;
+    font-family: 'Inter', sans-serif;
+}
+
+.user-btn:hover {
+    background: var(--notion-bg-secondary);
+}
+
+.user-dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 4px;
+    background: var(--notion-bg);
+    border: 1px solid var(--notion-border);
+    border-radius: var(--notion-radius);
+    box-shadow: var(--notion-shadow-hover);
+    min-width: 120px;
+    z-index: 1000;
+}
+
+.user-dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 8px 16px;
+    color: var(--notion-text);
+    text-decoration: none;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    text-align: left;
+    transition: background-color 0.15s ease;
+}
+
+.dropdown-item:hover {
+    background: var(--notion-bg-hover);
+}
+
+.dropdown-item:first-child {
+    border-radius: var(--notion-radius) var(--notion-radius) 0 0;
+}
+
+.dropdown-item:last-child {
+    border-radius: 0 0 var(--notion-radius) var(--notion-radius);
+}
+
+.logout-btn {
+    color: var(--notion-red);
+}
+
+.logout-btn:hover {
+    background: rgba(224, 62, 62, 0.1);
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     .writer-container {
@@ -555,7 +709,7 @@ main {
     }
 
     .editor-wrapper {
-        padding: 20px 16px;
+        padding: 15px; /* Keep consistent 15px padding on mobile */
         max-width: 100%;
     }
 
@@ -596,6 +750,11 @@ main {
         padding: 24px;
         width: 95%;
     }
+    
+    .user-dropdown-menu {
+        right: -8px;
+        min-width: 140px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -604,7 +763,7 @@ main {
     }
 
     .editor-wrapper {
-        padding: 16px 12px;
+        padding: 15px; /* Keep consistent 15px padding on small mobile */
     }
 
     .title-input {

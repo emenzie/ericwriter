@@ -7,10 +7,6 @@
     {% if current_user.is_authenticated %}
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <div class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <h2>Documents</h2>
-                <button onclick="newDocument()" class="new-doc-btn">New</button>
-            </div>
             <div class="documents-list" id="documents-list">
                 <!-- Documents will be loaded here -->
             </div>
@@ -32,6 +28,11 @@
         </div>
     {% endif %}
 </div>
+
+<!-- Floating New Note Button -->
+{% if current_user.is_authenticated %}
+<button class="floating-new-btn" onclick="newDocument()" title="New Note">+</button>
+{% endif %}
 
 <!-- Delete Confirmation Modal (outside conditional block) -->
 <div id="deleteModal" class="modal">

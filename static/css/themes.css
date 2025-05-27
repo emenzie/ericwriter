@@ -91,6 +91,18 @@
     border: 1px solid #e9e9e7;
 }
 
+.minimalist .new-doc-btn,
+.minimalist .auth-btn,
+.minimalist .welcome-btn {
+    color: white;
+}
+
+.minimalist .new-doc-btn:hover,
+.minimalist .auth-btn:hover,
+.minimalist .welcome-btn:hover {
+    color: white;
+}
+
 /* Theme: Cyberpunk */
 .cyberpunk {
     --bg-primary: #0d1117;
@@ -127,6 +139,18 @@
     background: linear-gradient(135deg, #fef7ed 0%, #fff7ed 100%);
     border: 1px solid #fed7aa;
     color: #1e40af;
+}
+
+.beach_vacation .new-doc-btn,
+.beach_vacation .auth-btn,
+.beach_vacation .welcome-btn {
+    color: white;
+}
+
+.beach_vacation .new-doc-btn:hover,
+.beach_vacation .auth-btn:hover,
+.beach_vacation .welcome-btn:hover {
+    color: white;
 }
 
 /* Theme: Major City */
@@ -313,6 +337,47 @@
     box-shadow: var(--notion-shadow-hover);
 }
 
+/* Apply Theme Section */
+.apply-theme-section {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--notion-bg);
+    border-top: 1px solid var(--notion-border);
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+
+.apply-theme-btn {
+    background: var(--accent-color, var(--notion-blue));
+    color: white;
+    border: none;
+    padding: 12px 32px;
+    border-radius: var(--notion-radius);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.15s ease;
+    font-family: 'Inter', sans-serif;
+    box-shadow: var(--notion-shadow);
+    border: 1px solid var(--accent-color, var(--notion-blue));
+}
+
+.apply-theme-btn:hover {
+    background: color-mix(in srgb, var(--accent-color, var(--notion-blue)) 85%, black);
+    transform: translateY(-1px);
+    box-shadow: var(--notion-shadow-hover);
+    border-color: color-mix(in srgb, var(--accent-color, var(--notion-blue)) 85%, black);
+}
+
+/* Add bottom padding to settings container to account for fixed button */
+.settings-container {
+    padding-bottom: 100px;
+}
+
 /* Apply theme variables to components */
 body {
     background-color: var(--bg-primary);
@@ -386,16 +451,40 @@ nav {
     transition: background-color 0.3s;
 }
 
+.new-doc-btn {
+    background: var(--accent-color);
+    color: var(--bg-primary);
+    border-color: var(--accent-color);
+    transition: all 0.3s;
+}
+
+.new-doc-btn:hover {
+    background: color-mix(in srgb, var(--accent-color) 85%, black);
+    border-color: color-mix(in srgb, var(--accent-color) 85%, black);
+}
+
 .auth-btn {
     background: var(--accent-color);
     color: var(--bg-primary);
-    transition: background-color 0.3s;
+    border-color: var(--accent-color);
+    transition: all 0.3s;
+}
+
+.auth-btn:hover {
+    background: color-mix(in srgb, var(--accent-color) 85%, black);
+    border-color: color-mix(in srgb, var(--accent-color) 85%, black);
 }
 
 .welcome-btn {
     background: var(--accent-color);
     color: var(--bg-primary);
-    transition: background-color 0.3s;
+    border-color: var(--accent-color);
+    transition: all 0.3s;
+}
+
+.welcome-btn:hover {
+    background: color-mix(in srgb, var(--accent-color) 85%, black);
+    border-color: color-mix(in srgb, var(--accent-color) 85%, black);
 }
 
 /* Mobile responsive adjustments */

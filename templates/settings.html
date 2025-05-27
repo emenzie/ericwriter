@@ -22,6 +22,11 @@
             {% endfor %}
         </div>
         
+        <!-- Apply Theme Button (hidden when custom controls are shown) -->
+        <div class="apply-theme-section" id="applyThemeSection">
+            <button class="apply-theme-btn" onclick="applyThemeAndReturn()">Apply Theme</button>
+        </div>
+        
         <!-- Custom Theme Controls -->
         <div class="custom-theme-controls" id="customControls">
             <h3>Custom Theme Settings</h3>
@@ -67,13 +72,17 @@
 {% block scripts %}
 <script>
 function selectTheme(theme) {
-    // Show/hide custom controls
+    // Show/hide custom controls and apply theme button
     const customControls = document.getElementById('customControls');
+    const applyThemeSection = document.getElementById('applyThemeSection');
+    
     if (theme === 'custom') {
         customControls.classList.add('active');
+        applyThemeSection.style.display = 'none';
         return; // Don't save yet, let user configure first
     } else {
         customControls.classList.remove('active');
+        applyThemeSection.style.display = 'block';
     }
 
     // Update UI
@@ -161,24 +170,55 @@ function applyCustomTheme() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Update UI
-            document.querySelectorAll('.theme-option').forEach(option => {
-                option.classList.remove('active');
-                if (option.dataset.theme === 'custom') {
-                    option.classList.add('active');
-                }
-            });
-            
             localStorage.setItem('theme', 'custom');
             localStorage.setItem('customSettings', JSON.stringify(customSettings));
-            alert('Custom theme saved successfully!');
-            window.location.reload();
+            // Redirect to main page
+            window.location.href = '/';
         }
     })
     .catch(error => {
         console.error('Error saving custom theme:', error);
         alert('Failed to save custom theme. Please try again.');
     });
+}
+
+function applyThemeAndReturn() {
+    // Get currently selected theme
+    const activeTheme = document.querySelector('.theme-option.active');
+    if (activeTheme) {
+        const theme = activeTheme.dataset.theme;
+        
+        // If it's custom theme, apply custom settings
+        if (theme === 'custom') {
+            applyCustomTheme();
+            return;
+        }
+        
+        // For regular themes, save and redirect
+        fetch('/settings', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('input[name="csrf_token"]').value
+            },
+            body: JSON.stringify({ theme: theme })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                localStorage.setItem('theme', theme);
+                // Redirect to main page
+                window.location.href = '/';
+            }
+        })
+        .catch(error => {
+            console.error('Error saving theme:', error);
+            alert('Failed to save theme. Please try again.');
+        });
+    } else {
+        // No theme selected, just go back
+        window.location.href = '/';
+    }
 }
 
 // Add event listeners for live preview

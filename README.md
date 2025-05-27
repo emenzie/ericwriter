@@ -1,6 +1,6 @@
 # EricWriter
 
-A minimalist, distraction-free writing application.  Add to it as you like!
+A minimalist, distraction-free writing application.  Vibe coding FTW
 
 ## 👨‍💻 Author
 
@@ -148,14 +148,7 @@ For production, consider:
 
 ## 🎯 Roadmap
 
-- [ ] Export documents (PDF, Markdown, TXT)
-- [ ] Document search functionality
-- [ ] Collaborative editing
-- [ ] Mobile app versions
-- [ ] Cloud synchronization
-- [ ] More theme options
-- [ ] Keyboard shortcuts
-- [ ] Word count statistics
+- Vibes
 
 ## 🤝 Contributing
 

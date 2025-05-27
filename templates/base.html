@@ -10,14 +10,19 @@
 <body class="{{ current_user.theme if current_user.is_authenticated else 'minimalist' }}">
     <nav>
         <div class="nav-content">
+            <a href="/" class="logo" data-text="EricWriter">EricWriter</a>
             {% if current_user.is_authenticated %}
                 <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
             {% endif %}
-            <a href="/" class="logo">EricWriter</a>
             <div class="nav-links">
                 {% if current_user.is_authenticated %}
-                    <a href="/settings" class="nav-btn">Settings</a>
-                    <button onclick="logout()" class="nav-btn">Logout</button>
+                    <div class="user-dropdown">
+                        <button class="user-btn" onclick="toggleUserDropdown()">{{ current_user.username }}</button>
+                        <div class="user-dropdown-menu" id="userDropdown">
+                            <a href="/settings" class="dropdown-item">Settings</a>
+                            <button onclick="logout()" class="dropdown-item logout-btn">Logout</button>
+                        </div>
+                    </div>
                 {% else %}
                     <a href="/login" class="nav-btn">Login</a>
                     <a href="/register" class="nav-btn">Register</a>
@@ -57,6 +62,23 @@
             sidebar.classList.toggle('mobile-open');
         }
     }
+    
+    // User dropdown toggle
+    function toggleUserDropdown() {
+        const dropdown = document.getElementById('userDropdown');
+        if (dropdown) {
+            dropdown.classList.toggle('show');
+        }
+    }
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        const dropdown = document.getElementById('userDropdown');
+        const userBtn = document.querySelector('.user-btn');
+        if (dropdown && userBtn && !userBtn.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.classList.remove('show');
+        }
+    });
     
     window.addEventListener('load', initTheme);
     </script>
