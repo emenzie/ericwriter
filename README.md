@@ -4,7 +4,9 @@ A minimalist, distraction-free writing application inspired by Zenwriter.app. Er
 
 ## 👨‍💻 Author
 
-**Eric Menzie** - Creator and Developer 2025
+**Eric Menzie** - Creator and Developer
+Vibe coded with the help of "The Future Sound of London" and "Liquid Drum and Bass 2025 | Chill DnB" playlist. 
+Check them out on Spotify, and my music at "liighthouse".
 
 ## ✨ Features
 
