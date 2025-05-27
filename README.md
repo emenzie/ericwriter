@@ -1,10 +1,12 @@
 # EricWriter
 
-A minimalist, distraction-free writing application.  Vibe coding FTW
+A minimalist, distraction-free writing application. 
+Add to it as you like!
 
 Shout out to The Future Sound of London for this track that got me into the zone:
 https://open.spotify.com/track/50a2fhUzn1EiQBDvbeS1H3?si=6270dfda0cdd445b
 
+Vibe coding FTW
 
 ## 👨‍💻 Author
 
@@ -25,13 +27,6 @@ https://open.spotify.com/track/50a2fhUzn1EiQBDvbeS1H3?si=6270dfda0cdd445b
 - **Auto-Save**: Your work is automatically saved as you type
 - **Rich Text Editor**: Contenteditable interface with placeholder text
 - **Responsive Design**: Works seamlessly on desktop and mobile devices
-
-### 📁 **Document Management**
-- **Sidebar Navigation**: Quick access to all your documents
-- **Document Tiles**: Shows title and last modified date
-- **Delete with Confirmation**: Safe deletion with "Are you sure?" modal
-- **New Document**: Instantly create new documents with one click
-- **Active Document Highlighting**: Visual indicator of currently open document
 
 ### 🔐 **User Authentication**
 - **Secure Registration/Login**: Individual user accounts with password hashing
@@ -110,7 +105,7 @@ Visit `http://localhost:5000` to start writing!
 5. Click **Apply Custom Theme** to save
 
 ### Document Management
-- **Create**: Click "New" button in sidebar
+- **Create**: Click "+" button in lower right corner
 - **Open**: Click any document tile in sidebar
 - **Delete**: Hover over document tile and click the "×" button
 - **Auto-Save**: Documents save automatically every second after changes
